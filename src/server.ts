@@ -224,7 +224,6 @@ app.get("/events", (req, res) => {
         const filteredEvents = getEventByCategory(category as string);
         res.json(filteredEvents);
     } else {
-        res.json(events);
         res.json(getAllEvents());
     }
 });
@@ -249,29 +248,50 @@ app.post("/events", (req, res) => {
 });
 
 ///////////////////////////////////////Book/////////////////////////////////////
-// เพิ่ม endpoint /books เพื่อคืนค่าหนังสือทั้งหมด
+////เพิ่ม function
+// สร้าง function getBookByCategory(category: string) เพื่อค้นหา book ตาม category
+function getBookByCategory(category: string): Book[] {
+    const filteredBooks = books.filter((book) => book.groups.includes(category));
+    return filteredBooks;
+}
+// สร้าง function getAllEvents() เพื่อคืนค่า event ทั้งหมด
+function getAllBooks(): Book[] {
+    return books;
+}
+// สร้าง function getBookById(id: number) เพื่อค้นหา book ตาม id 
+function getBookById(id: number): Book | undefined {
+    return books.find((book) => book.id === id);
+}
+// สร้าง function addBook(newBook: Book) เพื่อเพิ่ม book ใหม่
+function addBook(newBook: Book): Book {
+    newBook.id = books.length + 1;
+    books.push(newBook);
+    return newBook;
+}
+
+
+////endpoint
+// เปลี่ยน res.json(books);เป็น res.json(getAllBooks()); เพื่อให้เรียก function ที่สร้างไว้
 app.get('/books', (req: Request, res: Response) => {
-    res.json(books);
+    res.json(getAllBooks());
 });
 
-// เพิ่ม endpoint /search-books เพื่อค้นหาหนังสือที่มีชื่อขึ้นต้นด้วยคำที่ระบุเป็น query parameter
+// เพิ่ม endpoint /search-books เพื่อค้นหาหนังสือตาม category
 app.get('/search-books', (req: Request, res: Response) => {
-    const titleQuery = req.query.title as string;
-    if (titleQuery) {
-        const filteredBooks = books.filter((book) =>
-            book.title.toLowerCase().startsWith(titleQuery.toLowerCase())
-        );
-        res.json(filteredBooks);
+    const category = req.query.category as string;
+    if (category) {
+        res.json(getBookByCategory(category));
     } else {
         res.json([]);
     }
 });
 
 
-// เพิ่ม endpoint /books/:id เพื่อดึงข้อมูลของหนังสือตาม id
+////endpoint
+// เพิ่ม endpoint /books/:id เพื่อดึงข้อมูล book ตาม id
 app.get("/books/:id", (req: Request, res: Response) => {
-    const id = parseInt(req.params.id); // แปลง id จาก string เป็น number
-    const book = books[id - 1]; // หา book โดยใช้ index (id เริ่มที่ 1 แต่ array index เริ่มที่ 0)
+    const id = parseInt(req.params.id);
+    const book = getBookById(id);
 
     if (book) {
         res.json(book);
@@ -288,15 +308,14 @@ app.post("/books", (req: Request, res: Response) => {
     const existingBookIndex = books.findIndex((book) => book.id === newBook.id);
 
     if (existingBookIndex !== -1) {
-        // ถ้า id มีอยู่แล้วให้ทำการอัปเดตข้อมูล
         books[existingBookIndex] = newBook;
-        res.json({ message: 'Book updated successfully', book: newBook });
+        res.json({ message: "Book updated successfully", book: newBook });
     } else {
-        // ถ้า id ไม่มีอยู่ในระบบให้เพิ่มข้อมูลใหม่
-        books.push(newBook);
-        res.json({ message: 'Book added successfully', book: newBook });
+        const addedBook = addBook(newBook);
+        res.json({ message: "Book added successfully", book: addedBook });
     }
 });
+
 
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);
