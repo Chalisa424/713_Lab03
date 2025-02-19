@@ -84,22 +84,24 @@ const events: Event[] = [
 ////เพิ่ม function
 
 // สร้าง function getEventByCategory(category: string) เพื่อค้นหา event ตาม category
-export function getEventByCategory(category: string): Event[] {
+export function getEventByCategory(category: string): Promise<Event[] {
     const filteredEvents = events.filter((event) => event.category === category);
-    return filteredEvents;
+    return Promise.resolve(filteredEvents);
 }
 // สร้าง function getAllEvents() เพื่อคืนค่า event ทั้งหมด
-export function getAllEvents(): Event[] {
-    return events;
+export function getAllEvents(): Promise<Event[] {
+    return Promise.resolve(events);
 }
 // สร้าง function getEventById(id: number) เพื่อค้นหา event ตาม id 
-export function getEventById(id: number): Event | undefined {
-    return events.find((event) => event.id === id);
+export function getEventById(id: number): Promise<Event | undefined {
+    return Promise.resolve(events.find((event) => event.id === id));
 }
 // สร้าง function addEvent(newEvent: Event) เพื่อเพิ่ม event ใหม่
-export function addEvent(newEvent: Event): Event {
+export function addEvent(newEvent: Event): Promise<Event {
     newEvent.id = events.length + 1;
     events.push(newEvent);
-    return newEvent;
+    return Promise.resolve(newEvent);
 }
+
+
 
