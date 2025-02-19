@@ -1,16 +1,5 @@
 ///////////////////////////////////////Event/////////////////////////////////////
-
-export interface Event {
-    id: number;
-    category: string;
-    title: string;
-    description: string;
-    location: string;
-    date: string;
-    time: string;
-    petsAllowed: boolean;
-    organizer: string;
-}
+import { Event } from "../models/Event";
 
 // สร้างตัวแปร events เพื่อเก็บข้อมูล list ของ events
 const events: Event[] = [
