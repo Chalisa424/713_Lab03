@@ -90,21 +90,23 @@ const books: Book[] = [
 
 ////เพิ่ม function
 // สร้าง function getBookByCategory(category: string) เพื่อค้นหา book ตาม category
-export function getBookByCategory(category: string): Book[] {
+export function getBookByCategory(category: string): Promise<Book[]> {
     const filteredBooks = books.filter((book) => book.groups.includes(category));
-    return filteredBooks;
+    return Promise.resolve(filteredBooks);
 }
-// สร้าง function getAllEvents() เพื่อคืนค่า event ทั้งหมด
-export function getAllBooks(): Book[] {
-    return books;
+// สร้าง function getAllBooks() เพื่อคืนค่า book ทั้งหมด
+export function getAllBooks(): Promise<Book[]> {
+    return Promise.resolve(books);
 }
+
+
 // สร้าง function getBookById(id: number) เพื่อค้นหา book ตาม id 
-export function getBookById(id: number): Book | undefined {
-    return books.find((book) => book.id === id);
+export function getBookById(id: number): Promise<Book | undefined >{
+    return Promise.resolve(books.find((book) => book.id === id));
 }
 // สร้าง function addBook(newBook: Book) เพื่อเพิ่ม book ใหม่
-export function addBook(newBook: Book): Book {
+export function addBook(newBook: Book): Promise<Book>{
     newBook.id = books.length + 1;
     books.push(newBook);
-    return newBook;
+    return Promise.resolve(newBook);
 }

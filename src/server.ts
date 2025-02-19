@@ -63,26 +63,33 @@ app.post("/events", async (req, res) => {
 
 ////endpoint
 // เปลี่ยน res.json(books);เป็น res.json(getAllBooks()); เพื่อให้เรียก function ที่สร้างไว้
-app.get('/books', (req: Request, res: Response) => {
-    res.json(getAllBooks());
-});
-
-// เพิ่ม endpoint /search-books เพื่อค้นหาหนังสือตาม category
-app.get('/search-books', (req: Request, res: Response) => {
-    const category = req.query.category as string;
-    if (category) {
-        res.json(getBookByCategory(category));
+app.get('/books', async (req,res) => {
+    if (req.query.category) {
+        const category = req.query.category;
+       const filteredBooks = await getBookByCategory(category as string);
+        res.json(filteredBooks);
     } else {
-        res.json([]);
+        const allBooks = await getAllBooks();
+        res.json(allBooks); // คืนค่าหนังสือทั้งหมด
     }
 });
 
+// เพิ่ม endpoint /search-books เพื่อค้นหาหนังสือตาม category
+app.get('/search-books', async (req, res) => {
+    const category = req.query.category as string;
+    if (category) {
+        const filteredBooks = await getBookByCategory(category);
+        res.json(filteredBooks);
+    } else {
+        res.json([]); // คืนค่าหนังสือทั้งหมดหากไม่มีการระบุ category
+    }
+});
 
 ////endpoint
 // เพิ่ม endpoint /books/:id เพื่อดึงข้อมูล book ตาม id
-app.get("/books/:id", (req: Request, res: Response) => {
+app.get("/books/:id", async (req, res) => {
     const id = parseInt(req.params.id);
-    const book = getBookById(id);
+    const book = await getBookById(id);
 
     if (book) {
         res.json(book);
@@ -92,17 +99,20 @@ app.get("/books/:id", (req: Request, res: Response) => {
 });
 
 //สร้าง post methods เพื่อเพิ่มข้อมูล
-app.post("/books", (req: Request, res: Response) => {
+app.post("/books", async (req, res) => {
     const newBook: Book = req.body;
 
     // เช็คว่า id ของหนังสือที่ส่งมามีอยู่ในระบบหรือไม่
-    const existingBookIndex = getAllBooks().findIndex((book) => book.id === newBook.id);
+    const books = await getAllBooks();
+    const existingBookIndex = books.findIndex((book) => book.id === newBook.id);
 
     if (existingBookIndex !== -1) {
-        addBook(newBook);
+        // หากพบหนังสือแล้วอัพเดท
+        books[existingBookIndex] = newBook;
         res.json({ message: "Book updated successfully", book: newBook });
     } else {
-        const addedBook = addBook(newBook);
+        // หากไม่พบให้เพิ่มหนังสือใหม่
+        const addedBook = await addBook(newBook);
         res.json({ message: "Book added successfully", book: addedBook });
     }
 });
