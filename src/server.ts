@@ -3,10 +3,10 @@
 
 import express, { Request, Response } from 'express';
 import { getAllEvents, getEventByCategory, getEventById, addEvent } from "./service/EventService";
-import type { Event } from "./service/EventService";
+import type { Event } from "./models/Event";
 
 import { getAllBooks, getBookByCategory, getBookById, addBook } from "./service/BookService";
-import type { Book } from "./service/BookService";
+import type { Book } from "./models/Book";
 
 const app = express();
 const port = 3000;
