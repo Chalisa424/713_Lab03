@@ -1,11 +1,10 @@
 import type { Event } from "../models/Event";
-import * as repo from "../repository/EventRepository";
+import * as repo from "../repository/EventRepositoryDb";
 
 
 export function getEventByCategory(category: string): Promise<Event[]> {
     return repo.getEventByCategory(category);
 }
-
 
 
 export function getAllEvents(): Promise<Event[]> {
