@@ -7,10 +7,11 @@ INSERT INTO events (id, category, title, description, location, date, time, pets
 (6, 'Food', 'Food Festival', 'A festival featuring various local and international cuisines.', 'City Park', '2025-08-15', '12:00', TRUE, 'Gourmet Events');
 
 
-INSERT INTO books (id, category, title, description, location, date, time, petsAllowed, organizer)VALUES
-(1, 'Group1', 'Fullmetal Alchemist', 'Edward and Alphonse Elric break alchemy\'s ultimate taboo—human transmutation...', 'Tokyo', '2025-02-20', '14:30:00', TRUE, 'Hiromu Arakawa'),
-(2, 'Group2', 'Attack on Titan', 'In a world where humanity resides within enormous walled cities...', 'Osaka', '2025-02-22', '15:00:00', FALSE, 'Hajime Isayama'),
-(3, 'Group3', 'Death Note', 'A high school student, Light Yagami, discovers a mysterious notebook...', 'Kyoto', '2025-03-01', '16:00:00', TRUE, 'Tsugumi Ohba'),
-(4, 'Group1', 'One Piece', 'Monkey D. Luffy, a young pirate with the ability to stretch...', 'Fukuoka', '2025-03-05', '17:00:00', TRUE, 'Eiichiro Oda'),
-(5, 'Group2', 'Naruto', 'Naruto Uzumaki, an orphaned ninja, dreams of becoming the strongest...', 'Nagoya', '2025-03-10', '18:00:00', FALSE, 'Masashi Kishimoto'),
-(6, 'Group3', 'Dragon Ball', 'The adventures of Goku, a powerful martial artist...', 'Sapporo', '2025-03-12', '19:00:00', TRUE, 'Akira Toriyama');
+INSERT INTO books (id, title, author_name, description, publication_year, pages, language, available_copies)
+VALUES
+(1,'Fullmetal Alchemist', 'Hiromu Arakawa', 'Edward and Alphonse Elric break alchemy\'s taboo to revive their mother.', 2001, 108, 'Japanese', 5),
+(2,'Attack on Titan', 'Hajime Isayama', 'Eren Yeager vows to eliminate Titans after they destroy his home.', 2009, 120, 'Japanese', 3),
+(3,'Death Note', 'Tsugumi Ohba', 'Light Yagami discovers a notebook that allows him to kill anyone whose name he writes in it.', 2003, 108, 'Japanese', 7),
+(4,'One Piece', 'Eiichiro Oda', 'Monkey D. Luffy, a young pirate, seeks the legendary One Piece to become King of Pirates.', 1997, 200, 'Japanese', 10),
+(5,'Naruto', 'Masashi Kishimoto', 'Naruto Uzumaki dreams of becoming the strongest ninja and earning the title of Hokage.', 1999, 150, 'Japanese', 6),
+(6,'Dragon Ball', 'Akira Toriyama', 'Goku, a martial artist, seeks the mystical Dragon Balls and battles powerful enemies.', 1984, 180, 'Japanese', 4);
