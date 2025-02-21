@@ -8,7 +8,33 @@ import type { Event } from "./models/Event";
 import { getAllBooks, getBookByCategory, getBookById, addBook } from "./service/BookService";
 import type { Book } from "./models/Book";
 
+import multer from 'multer';
+import { uploadFile } from './service/UploadFileService';
+
+
 const app = express();
+const upload = multer({ storage: multer.memoryStorage() });
+ 
+app.post('/upload', upload.single('file'), async (req: any, res: any) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).send('No file uploaded.');
+    }
+
+    const bucket = 'images';
+    const filePath = `uploads/${file.originalname}`;
+ 
+    await uploadFile(bucket, filePath, file);
+
+    res.status(200).send('File uploaded successfully.');
+  } catch (error) {
+    res.status(500).send('Error uploading file.');
+  }
+});
+
+
+
 const port = 3000;
 app.use(express.json());
 app.set("json spaces", 2);
