@@ -1,5 +1,5 @@
 import { Book } from '../models/Book';
-import * as repo from "../repository/BookRepository";
+import * as repo from "../repository/BookRepositoryDb";
 
 export function getBookByCategory(category: string): Promise<Book[]> {
     return repo.getBookByCategory(category);
